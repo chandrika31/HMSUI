@@ -1,0 +1,269 @@
+<body class="home-bg">
+    <p-blockUI [blocked]="blockScreen">
+        <p-progressSpinner class="spinner" strokeWidth="4" *ngIf="blockScreen"></p-progressSpinner>
+    </p-blockUI>
+    <div class="p-grid card page-content border-color">
+        <div class="p-col-12 p-md-12 p-lg-12 no-pad">
+            <app-topbar></app-topbar>
+        </div>
+        <p-toast position="top-center" key="t-err"></p-toast>
+        <div class="p-col-12 p-md-12 p-lg-12 border-color" style="min-height: 445px;">
+            <p-panel>
+                <p-header>Natural Calamities Details Form
+                    <div class="ui-g panel-header">
+                        <div class="ui-g-12"></div>
+                    </div>
+                </p-header>
+                <form #f="ngForm" name="natrualCalamitiesForm">
+                    <div class="p-grid card">
+                        <!-- row 1 -->
+                        <div class="p-col-12 p-md-4 p-lg-2">
+                            <div>
+                                <label for="loc" class="label-text-color">Incident Location:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-dropdown #loc name="loc" [options]="locationOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="location"
+                                (onClick)="onSelect('L')" (onChange)="onResetFields('L')" optionLabel="label" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-2">
+                            <div>
+                                <label for="rname" class="label-text-color">Region:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-dropdown #reg name="rname" [options]="regionOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="rcode"
+                                (onClick)="onSelect('RM')" (onChange)="onResetFields('RM')" filter="true"
+                                resetFilterOnHide="true" filterMatchMode="startsWith" optionLabel="label" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-2">
+                            <div>
+                                <label for="dname" class="label-text-color">District:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-dropdown #dist name="dname" [options]="districtOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="dcode"
+                                (onClick)="onSelect('DM')" filter="true" resetFilterOnHide="true"
+                                filterMatchMode="startsWith" (onChange)="onResetFields('DM')" optionLabel="label"
+                                required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-2">
+                            <div>
+                                <label class="label-text-color" for="shopcd">Shop Number:<span *ngIf="!disableShop"
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-dropdown #shop name="shop" [options]="shopOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="shopNo" filter="true"
+                                (onClick)="onSelect('SH')" resetFilterOnHide="true" filterMatchMode="startsWith"
+                                optionLabel="label" (onChange)="onResetFields('SH')" [disabled]="disableShop" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div style="padding-top: 1.7rem;" class="p-col-12 p-md-6 p-lg-3">
+                            <div class="p-float-label">
+                                <input class="p-col-12" name="addr" id="float-input" size="30" pInputText
+                                    [(ngModel)]="address" type="text" autocomplete="off" tabindex="3">
+                                <label for="float-input">Address:<span class="form-mandatory-field">*</span></label>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <!-- row 2 -->
+                        <div class="p-col-12 p-md-6 p-lg-2">
+                            <div>
+                                <label class="label-text-color" for="issue">Component:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-dropdown #iss name="issue" [options]="issueTypeOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="issueType" filter="true"
+                                (onClick)="onSelect('IT')" resetFilterOnHide="true" filterMatchMode="startsWith"
+                                optionLabel="label" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-2">
+                            <div>
+                                <label for="stats" class="label-text-color">Status:</label>
+                            </div>
+                            <p-dropdown #stats name="stats" [options]="statusOptions"
+                                [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="status" filter="true"
+                                resetFilterOnHide="true" (onClick)="onSelect('ST')" filterMatchMode="startsWith"
+                                optionLabel="label" [disabled]="disableStatus" required>
+                                <ng-template let-item pTemplate="selectedItem">
+                                    <span style="vertical-align:middle">{{item.label}}</span>
+                                </ng-template>
+                            </p-dropdown>
+                        </div>
+                        <div class="p-col-12 p-md-4 p-lg-2">
+                            <div>
+                                <label class="label-text-color" for="ddate">Incident Date:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-calendar name="ddate" [maxDate]="maxDate" dateFormat="yy-mm-dd" [(ngModel)]="docDate"
+                                [minDate]="minDate" [showIcon]="true" required></p-calendar>
+                        </div>
+                        <div *ngIf="showCDate" class="p-col-12 p-md-4 p-lg-2">
+                            <div>
+                                <label class="label-text-color" for="cdate">Completed Date:<span
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <p-calendar name="cdate" [maxDate]="maxDate" dateFormat="yy-mm-dd"
+                                [(ngModel)]="completedDate" [showIcon]="true" required>
+                            </p-calendar>
+                        </div>
+                        <div style="padding-top: 1.7rem;" class="p-col-12 p-md-6 p-lg-3">
+                            <div class="p-float-label">
+                                <input class="p-col-12" name="reasonText" id="float-input" size="30" pInputText
+                                    [(ngModel)]="reason" type="text" autocomplete="off" tabindex="3">
+                                <label for="float-input">Summary:<span class="form-mandatory-field">*</span></label>
+                            </div>
+                        </div>
+                        &nbsp;
+                        <!-- row 3 -->
+                        <div class="p-col-12 p-md-6 p-lg-2 pad-left">
+                            <div>
+                                <label class="label-text-color" for="video_type">Do you want to upload video?:</label>
+                            </div>
+                            <div class="border-grey">
+                                <div style="padding-top: 5px;"> &nbsp;
+                                    <p-radioButton name="video_type" label="Yes" value=1 [(ngModel)]="selectedVType"
+                                        (onClick)="isVideoURLDisabled=false" required>
+                                    </p-radioButton> &nbsp;&nbsp;
+                                    <p-radioButton name="video_type" value=0 label="No" [(ngModel)]="selectedVType"
+                                        (onClick)="isVideoURLDisabled=true" required>
+                                    </p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-3">
+                            <div>
+                                <label class="label-text-color" for="video_url">Video URL:<span *ngIf="selectedVType==1"
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <input class="p-col-12" name="video_url" type="url" pInputText [(ngModel)]="videoURLPath"
+                                autocomplete="off" style="text-decoration: underline; color: rgb(116, 116, 255);"
+                                [disabled]="isVideoURLDisabled" required>
+                            <!-- (change)="onFileUpload($event)" -->
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-2 pad-left">
+                            <div>
+                                <label class="label-text-color" for="image_type">Do you want to upload Image?:</label>
+                            </div>
+                            <div class="border-grey">
+                                <div style="padding-top: 5px;"> &nbsp;
+                                    <p-radioButton name="image_type" label="Yes" value=1 [(ngModel)]="selectedIType"
+                                        (onClick)="isImageURLDisabled=false" required>
+                                    </p-radioButton> &nbsp;&nbsp;
+                                    <p-radioButton name="image_type" value=0 label="No" [(ngModel)]="selectedIType"
+                                        (onClick)="isImageURLDisabled=true" required>
+                                    </p-radioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-col-12 p-md-6 p-lg-3">
+                            <div>
+                                <label class="label-text-color" for="image_url">Image URL:<span *ngIf="selectedIType==1"
+                                        class="form-mandatory-field">*</span></label>
+                            </div>
+                            <input class="p-col-12" name="image_url" type="url" pInputText [(ngModel)]="imageURLPath"
+                                autocomplete="off" style="text-decoration: underline; color: rgb(116, 116, 255);"
+                                [disabled]="isImageURLDisabled" required>
+                        </div>
+                        <!-- row 4 -->
+                        <div class="p-col-12 p-md-12 p-lg-12">
+                            <div class="p-grid">
+                                <div class="p-col-4 p-md-2 p-lg-5"></div>
+                                <div class="p-col-4 p-md-2 p-lg-1 txt-align" style="display: grid;">
+                                    <button pButton type="submit" label="Save" class="p-button-raised p-btn-pad bg-div"
+                                        (click)="onSave(f)"
+                                        [disabled]="(!f.valid || (isEditClicked && !f.dirty) || isSaved)"></button>
+                                </div>
+                                <div class="p-col-4 p-md-2 p-lg-1 txt-align" style="display: grid;">
+                                    <button pButton type="button" label="View" class="p-button-raised p-btn-pad bg-div"
+                                        (click)="isEditClicked=true"></button>
+                                </div>
+                                <div class="p-col-4 p-md-2 p-lg-1 txt-align" style="display: grid;">
+                                    <button pButton type="button" label="Clear" class="p-button-raised p-btn-pad bg-div"
+                                        (click)="onClear(f)"></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-col-10 no-pad-top" style="font-size: 14px;"> **Dear users please update the
+                            video file in Google drive before
+                            submitting the video / image URL </div>
+                        <div class="p-col-3 no-pad-top" style="font-size: 14px;">**Click the icon to open google drive
+                        </div>
+                        <img src="https://hms.cctv.tasmac.co.in/hms-app/assets/images/dashboard/Google_Drive_logo.png"
+                            style="width: 40px;
+                            height: 40px; margin-left: -4%;margin-top: -10px;" (click)="openGoogleDrive()" />
+                        <!-- row 4 -->
+                        <div *ngIf="isEditClicked" class="p-col-12 p-md-12 p-lg-12 card border-color">
+                            <div class="header-line">Natural Calamities Details
+                                <span>
+                                    <button pButton type="button" icon="pi pi-times" iconPos="left"
+                                        style="float: right; height: 1.75rem; width: 2rem;"
+                                        (click)="isEditClicked=false"></button>
+                                </span>
+                            </div>
+                            <div class="p-col-12 p-md-4 p-lg-2">
+                                <div>
+                                    <label class="label-text-color" for="vdate">Date:</label>
+                                </div>
+                                <p-calendar name="vdate" [maxDate]="maxDate" dateFormat="yy-mm-dd"
+                                    [(ngModel)]="viewDate" [showIcon]="true" (ngModelChange)="getCalamityDetails()">
+                                </p-calendar>
+                            </div>
+                            <p-table #dt styleClass="p-datatable-gridlines p-datatable-sm"
+                                [columns]="calamityDetailsCols" [value]="calamityDetailsData" [rows]="50"
+                                [rowsPerPageOptions]="[10,20,30,40,50,100]" [paginator]="true" [responsive]="true"
+                                autoLayout="true" [loading]="loading" selectionMode="single">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr style="text-align: center;">
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                                    <tr [pSelectableRow]="rowData" (dblclick)="onRowSelect(rowData, rowIndex, f)">
+                                        <td *ngFor="let col of columns">
+                                            {{rowData[col.field]}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </div>
+                </form><br />
+                <div class="p-col-12" style="font-size: 15px;">
+                    <span style="text-decoration:underline;"> This form will help you to enter natural calamities
+                        information:
+                    </span><br />
+                    * User have to upload the video file or Image in Google Drive before submitting the form.
+                    <br />
+                    * User have to select the video upload radion button whether yes or no.<br />
+                    * If it is yes user have to mention the Google Drive video URL in Video URL textbox<br />
+                    * User have to select the image upload radion button whether yes or no<br />
+                    * If it is yes user have to mention the Google Drive image URL in Image URL textbox<br />
+                    * Summary should be a theft information <br />
+                </div>
+            </p-panel>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</body>

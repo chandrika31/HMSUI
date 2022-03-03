@@ -1,0 +1,80 @@
+<body class="home-bg">
+    <div class="p-grid card page-content border-color">
+        <div class="p-col-12 p-md-12 p-lg-12 no-pad">
+            <app-topbar></app-topbar>
+        </div>
+        <div class="p-col-12 p-md-12 p-lg-12 border-color" style="min-height:69vh;">
+            <p-panel>
+                <p-header>
+                    <div class="ui-g-12 ui-md-8 ui-g panel-header">Riot-Date-Wise Report
+                    </div>
+                </p-header>
+                <p-toast position="top-center" key="t-err"></p-toast>
+                <div class="p-col-12 no-pad-top" style="margin-top: -5px;">** Riot details by date wise **</div>
+                <div class="p-grid card border-color">
+                    <div class="p-col-12 p-md-4 p-lg-2 no-right-pad no-pad-top" style="padding-left: 15px;">
+                        <div>
+                            <label class="label-text-color" for="shopcd">From Date:</label>
+                        </div>
+                        <p-calendar name="fDate" [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="fromDate"
+                            [showIcon]="true" (ngModelChange)="checkValidDateSelection()"></p-calendar>
+                    </div>
+                    <div class="p-col-12 p-md-4 p-lg-2 no-pad-top">
+                        <div>
+                            <label class="label-text-color" for="shopcd">To Date:</label>
+                        </div>
+                        <p-calendar name="tDate" [maxDate]="maxDate" dateFormat="dd/mm/yy" [(ngModel)]="toDate"
+                            [showIcon]="true" (ngModelChange)="checkValidDateSelection()"></p-calendar>
+                    </div>
+                    <div class="p-col-12 p-md-4 p-lg-6"></div>
+
+                    <div class="p-col-12 p-md-4 p-lg-1" style="margin-top: 20px; text-align: right;">
+                        <button pButton type="submit" label="View" class="p-button-raised p-btn-pad bg-div"
+                            (click)="onView()"></button>
+                    </div>
+                    <div class="p-col-12 p-md-4 p-lg-1 no-pad-left" style="margin-top: 20px;">
+                        <button pButton type="submit" label="Excel" (click)="dt.exportCSV()"
+                            [disabled]="(TheftData.length == 0)" class="p-button-raised p-btn-pad bg-div"></button>
+                    </div>
+                    <div class="p-col-12 p-md-12 p-lg-12">
+                        <p-table #dt styleClass="p-datatable-gridlines p-datatable-sm" [columns]="TheftCols"
+                            [value]="TheftData" [rows]="50" [rowsPerPageOptions]="[10,20,30,40,50,100]"
+                            [paginator]="true" [responsive]="true" autoLayout="true" [loading]="loading"
+                            exportFilename="{{excelFileName}}" sortMode="multiple"
+                            [globalFilterFields]="['Shopcode','StatusName','DocDate','REGNNAME', 'Dname', 'IssueName']">
+                            <ng-template pTemplate="caption">
+                                <div class="p-d-flex">
+                                    <span class="p-input-icon-left p-ml-auto">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText type="text"
+                                            (input)="dt.filterGlobal($event.target.value, 'contains')"
+                                            placeholder="Search keyword" />
+                                    </span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header" let-columns>
+                                <tr style="text-align: center;">
+                                    <th>S.No</th>
+                                    <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
+                                        {{col.header}}
+                                        <p-sortIcon field="{{col.field}}">
+                                        </p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                                <tr [pSelectableRow]="rowData">
+                                    <td>{{rowIndex + 1 | number}}</td>
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</body>

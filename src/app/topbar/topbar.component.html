@@ -1,0 +1,47 @@
+<div class="p-col-12 p-md-12 p-lg-12 menu-bar border-green" style="height: 40px;">
+  <div class="p-grid" style="padding-top: 10px !important;">
+    <div class="topbar-items-align">
+      <a class="menu-a" (click)="onLogout()">Log Out<i class="pi pi-sign-out"
+          style="color: white; padding-left: 5px;padding-right: 15px;"></i></a>
+    </div>
+    <div class="margin-gap-layout">
+      <div class="p-grid">
+        <div id="rectangle-green" (click)="setTheme('G')"></div>
+        <div id="rectangle-yellow" (click)="setTheme('Y')"></div>
+        <div id="rectangle-blue" (click)="setTheme('B')"></div>
+        <div id="rectangle-red" (click)="setTheme('R')"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="p-grid" style="height: 77px !important;">
+  <div class="p-col-12 p-md-2 p-lg-2 no-pad-top" style="width: 135px !important;">
+    <div class="p-col-8 no-pad-bottom"
+      style="text-align: center; max-width: 135px !important; width: 135px !important;">
+      <img href="#default" class="logo" src="http://hms.cctv.tasmac.co.in/hms-app/assets/images/header/govt_emblem.png"
+        alt="logo" style="max-width: 135px; max-height: 70px;width: 75px;padding-right: initial;" />
+    </div>
+    <div class="p-col-6 no-pad-top" style="margin-top: -5px;">
+      <img href="#default" class="logo no-pad-top"
+        src="http://hms.cctv.tasmac.co.in/hms-app/assets/images/header/logo.jpg" alt="logo"
+        style="max-width: 120px; max-height: 56px;width: 120px;padding-right: initial;" />
+    </div>
+  </div>
+  <div class="p-md-1 p-lg-1"></div>
+  <div class="p-col-12 p-md-6 p-lg-7 no-pad-bottom" style="text-align: center;padding-top: 12px">
+    <div class="header-h1">CCTV - HELPDESK MANAGEMENT SYSTEM</div>
+    <div class="header-h2">TamilNadu State Marketing Corporation Ltd.</div>
+    <div class="header-h3">
+      (A Government of TamilNadu Undertaking)
+    </div>
+  </div>
+  <div class="p-col-2 p-md-2 p-lg-2 header-text no-pad-top no-pad-bottom">
+    <div>
+      CCTV Customer Care
+    </div>
+    {{tollFreeNumber}}
+  </div>
+</div>
+<div class="p-col-12 p-md-12 p-lg-12 no-pad-left no-pad-right no-pad-bottom" style="padding-top: 25px !important;">
+  <app-menubar></app-menubar>
+</div>

@@ -1,0 +1,136 @@
+<body class="home-bg">
+    <div class="p-grid card page-content border-color">
+        <div class="p-col-12 p-md-12 p-lg-12 no-pad">
+            <app-topbar></app-topbar>
+        </div>
+        <div class="p-col-12 p-md-12 p-lg-12 border-color" style="min-height:69vh;">
+            <p-panel>
+                <p-header>
+                    <div class="ui-g-12 ui-md-8 ui-g panel-header">My Ticket Report
+                    </div>
+                </p-header>
+                <p-toast position="top-center" key="t-err"></p-toast>
+                <div class="p-col-12 p-md-12 p-lg-12 no-pad-top">
+                    <span>** Tickets created by - <b>{{login_User}}</b> **</span>
+                    <div style="float: right;">
+                        <button pButton type="submit" label="Excel" (click)="dt.exportCSV()" icon="pi pi-download"
+                            [disabled]="(TicketReportData.length==0)" class="p-button-raised p-btn-pad bg-div"></button>
+                    </div>
+                    <div class="p-col-12" style="margin-top: 20px;">
+                        <p-table #dt styleClass="p-datatable-gridlines p-datatable-sm" [columns]="TicketReportCols"
+                            [value]="TicketReportData" [rows]="10" [rowsPerPageOptions]="[10,20,30,40,50,100]"
+                            [paginator]="true" [responsive]="true" autoLayout="true" [loading]="loading"
+                            selectionMode="single" (onRowSelect)="onRowSelect($event)"
+                            exportFilename="{{excelFileName}}" sortMode="multiple">
+                            <ng-template pTemplate="header" let-columns>
+                                <tr style="text-align: center;">
+                                    <th>S.No</th>
+                                    <th *ngFor="let col of columns" pSortableColumn="{{col.field}}">
+                                        {{col.header}}
+                                        <p-sortIcon field="{{col.field}}">
+                                        </p-sortIcon>
+                                    </th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                                <tr [pSelectableRow]="rowData">
+                                    <td>{{rowIndex + 1 | number}}</td>
+                                    <td *ngFor="let col of columns">
+                                        {{rowData[col.field]}}
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                    <p-dialog header="Ticket History" [(visible)]="showDialog" [style]="{width: '90vw'}" [modal]="true"
+                        [resizable]="true" [baseZIndex]="10000" [closable]="true" [maximizable]="true"
+                        icon="pi pi-exclamation-triangle">
+                        <div class="p-col-12 p-md-12 p-lg-12 card border-color margin-gap-layout"
+                            style="min-height: 20vw; margin-bottom: 10px;">
+                            <div style="float: right;">
+                                <button pButton type="submit" label="Excel" (click)="td.exportCSV()"
+                                    class="p-button-raised p-btn-pad bg-div" icon="pi pi-download"
+                                    iconPos="left"></button>
+                            </div>
+                            <p-table #td styleClass="p-datatable-gridlines p-datatable-sm" [columns]="TDCols"
+                                [value]="TDData" [rows]="50" [rowsPerPageOptions]="[10,20,30,40,50,100]"
+                                [paginator]="true" [responsive]="true" autoLayout="true" [loading]="loading"
+                                [(selection)]="selected" selectionMode="single" exportFilename="MY_TICKET_DESCRIPTIONS">
+                                <ng-template pTemplate="header" let-columns>
+                                    <tr style="text-align: center;">
+                                        <th *ngFor="let col of columns">
+                                            {{col.header}}
+                                        </th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+                                    <tr [pSelectableRow]="rowData">
+                                        <td *ngFor="let col of columns">
+                                            {{rowData[col.field]}}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </p-dialog>
+                </div>
+            </p-panel>
+
+            <p-dialog header="Update Ticket Comment!" [(visible)]="showComment" [style]="{width: '32vw'}" [modal]="true"
+                [resizable]="false" [baseZIndex]="10000" icon="pi pi-exclamation-triangle">
+                <div class="p-col-12 p-md-4 p-lg-12">
+                    <div>
+                        <label for="status" class="label-text-color">Status</label>
+                    </div>
+                    <p-dropdown #status name="status" [options]="StatusOptions"
+                        [style]="{'width':'-webkit-fill-available'}" [(ngModel)]="Status" filter="true"
+                        (onClick)="onSelect('Status')" resetFilterOnHide="true" optionLabel="label"
+                        filterMatchMode="startsWith" required>
+                        <ng-template let-item pTemplate="selectedItem">
+                            <span style="vertical-align:middle">{{item.label}}</span>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+                <div style="padding-top: 2vh" class="p-col-12 p-md-4 p-lg-12">
+                    <span class="p-float-label">
+                        <input class="p-col-12" id="float-input" size="30" pInputText [(ngModel)]="Assignee" type="text"
+                            autocomplete="off" tabindex="3">
+                        <label for="float-input">Assignee</label>
+                    </span>
+                </div>
+                <div style="padding-top: 2vh" class="p-col-12 p-md-4 p-lg-12">
+                    <div class="p-float-label">
+                        <input class="p-col-12" id="float-input" size="30" pInputText [(ngModel)]="DefaultCC"
+                            type="text" autocomplete="off" tabindex="3">
+                        <label for="float-input">Default CC</label>
+                    </div>
+                </div>
+                <!-- <div style="padding-top: 2vh" class="p-col-12 p-md-4 p-lg-12">
+                    <div class="p-float-label">
+                        <input class="p-col-12" id="float-input" size="30" pInputText [(ngModel)]="URL" type="text"
+                            autocomplete="off" tabindex="3">
+                        <label for="float-input">URL</label>
+                    </div>
+                </div> -->
+                <div style="padding-top: 2vh" class="p-col-12 p-md-4 p-lg-12">
+                    <div class="p-float-label">
+                        <input class="p-col-12" id="float-input" size="30" pInputText [(ngModel)]="Subject" type="text"
+                            autocomplete="off" tabindex="3">
+                        <label for="float-input">Subject</label>
+                    </div>
+                </div>
+                <div style="padding-top: 2vh" class="p-col-12 p-md-4 p-lg-12">
+                    <div class="p-float-label">
+                        <textarea [(ngModel)]="TicketDescription" rows="5" cols="55" pInputTextarea></textarea>
+                        <label for="float-input">Ticket Description</label>
+                    </div>
+                </div>
+                <ng-template pTemplate="footer">
+                    <button pButton (click)="onSave()" label="Update"></button>
+                    <button pButton (click)="onCancel()" label="Cancel"></button>
+                </ng-template>
+            </p-dialog>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</body>
